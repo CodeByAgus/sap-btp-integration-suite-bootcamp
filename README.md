@@ -5,7 +5,7 @@
 
 ## Caso de Negocio
 
-**ABC Consulting INC** está modernizando su proceso de onboarding de empleados. Actualmente toda la creación y modificación se realiza de forma manual, lo que genera ineficiencias y errores. El objetivo es automatizar completamente este proceso utilizando **SAP Integration Suite (CPI)** como plataforma de integración central.
+**ABC Consulting INC** El objetivo es automatizar completamente este proceso de onboarding de empleados utilizando **SAP Integration Suite (CPI)** como plataforma de integración central.
 
 Cuando un nuevo empleado ingresa a la empresa:
 
@@ -22,28 +22,7 @@ Cuando un nuevo empleado ingresa a la empresa:
 
 La solución consta de **dos iFlows** en SAP Integration Suite que trabajan en conjunto:
 
-```
-[Cola AMQP — Sistema Legacy]
-         │
-         ▼
-  ┌──────────────────┐
-  │    iFlow 2       │  ← Consume la cola, transforma y delega
-  │  AMQP Consumer   │
-  └────────┬─────────┘
-           │  (HTTP con API Key)
-           ▼
-  ┌──────────────────────────────────┐
-  │           iFlow 1                │
-  │       API Onboarding             │
-  │                                  │
-  │  BambooHR → Bookshop OData       │
-  │  → SFTP (foto del empleado)      │
-  │  → SAP S/4HANA (IDoc DEBMAS06)   │
-  │  → Tópico AMQP (respuesta final) │
-  └──────────────────────────────────┘
-```
-
----
+<img src="Src/Diagrama de arquitectura.jpeg">
 
 ## Flujo Funcional
 
@@ -74,18 +53,12 @@ La solución consta de **dos iFlows** en SAP Integration Suite que trabajan en c
 ```
 /
 ├── README.md                        ← Este archivo (visión general)
-├── Entrega_Final1/                  ← iFlow 2: Consumidor AMQP
-│   ├── README_EntregaFinal1.md      ← Documentación detallada
+├── iFlow 2: Consumidor AMQP/                  
+│   ├── README_Flow2.md      ← Documentación detallada
 │   └── src/...
-├── Entrega_Final2/                  ← iFlow 1: API Onboarding (flujo principal)
-│   ├── README_EntregaFinal2.md      ← Documentación detallada
+├── iFlow 1: API Onboarding/                  ← (flujo principal)
+│   ├── README_¿Flow1.md      ← Documentación detallada
 │   └── src/...
-└── docs/
-    ├── Flow1.jpeg
-    ├── Flow2_Principal.jpeg
-    ├── Book_conecction.png
-    ├── Photo_Connection.png
-    └── Idoc_conecction.png
 ```
 
 ---
