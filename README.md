@@ -78,7 +78,7 @@ La solución consta de **dos iFlows** en SAP Integration Suite que trabajan en c
 
 ## Documentación Detallada
 
-- [iFlow 2 — Consumidor AMQP](./Entrega_Final1/README_EntregaFinal1.md)
+- [iFlow 2 — Consumidor AMQP](https://github.com/CodeByAgus/sap-btp-integration-suite-bootcamp/tree/95f65c7de18903884f604491ad1bd291ad7a7b6f/Iflow%201)
 - [iFlow 1 — API Onboarding (flujo principal)](./Entrega_Final2/README_EntregaFinal2.md)
 
 ---
