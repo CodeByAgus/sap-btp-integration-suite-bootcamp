@@ -5,7 +5,7 @@
 
 ## Propósito
 
-Este iFlow es el **núcleo del proceso de onboarding**. Orquesta todas las integraciones necesarias para procesar un nuevo empleado: consulta su información en BambooHR, enriquece sus datos con el libro de bienvenida desde Bookshop, sincroniza su foto al SFTP corporativo, crea el empleado en SAP S/4HANA y publica el resultado final en el tópico AMQP de salida.
+Este iFlow es el **núcleo del proceso de onboarding**. Orquesta todas las integraciones necesarias para procesar un nuevo empleado: consulta su información en BambooHR, enriquece sus datos con el libro de bienvenida desde Bookshop, descarga su foto al SFTP corporativo y finalmente crea el registro en SAP S/4HANA mediante un IDoc.
 
 Está expuesto como API a través de **SAP API Management** y protegido con **API Key**, lo que permite que cualquier sistema autorizado lo invoque, no solo el iFlow 2.
 
@@ -13,7 +13,7 @@ Está expuesto como API a través de **SAP API Management** y protegido con **AP
 
 ## Diagrama Principal
 
-![Flow Principal](../docs/Flow2_Principal.jpeg)
+![Flow Principal](https://github.com/CodeByAgus/sap-btp-integration-suite-bootcamp/blob/main/docs/Flow2_Principal.jpeg?raw=true)
 
 ---
 
@@ -66,11 +66,11 @@ Exception Subprocess global → mensaje de error estructurado
 
 ## Subproceso: Consulta BambooHR
 
-![Flow Principal](../docs/Flow2_Principal.jpeg)
+![Flow BambooHR](https://github.com/CodeByAgus/sap-btp-integration-suite-bootcamp/blob/main/docs/Flow2_Principal.jpeg?raw=true)
 
 **Requerimiento:** obtener los datos del empleado desde BambooHR usando su ID.
 
-El iFlow realiza un GET a `/employees/{id}` mediante el adaptador **Open Connectors**, que abstrae la autenticación y el protocolo hacia BambooHR. La respuesta JSON se convierte a XML para facilitar el mapeo con los schemas definidos en el proyecto.
+El iFlow realiza un GET a `/employees/{id}` mediante el adaptador **Open Connectors**, que abstrae la autenticación y el protocolo hacia BambooHR. La respuesta JSON se convierte a XML para facilitar la extracción de propiedades y el mapeo posterior en los subprocesos.
 
 De la respuesta se extraen y almacenan como propiedades del mensaje los siguientes campos:
 
@@ -86,7 +86,7 @@ De la respuesta se extraen y almacenan como propiedades del mensaje los siguient
 
 ## Subproceso: Photo
 
-![Photo Connection](../docs/Photo_Connection.png)
+![Photo Connection](https://github.com/CodeByAgus/sap-btp-integration-suite-bootcamp/blob/main/docs/Photo_Connection.png?raw=true)
 
 **Requerimiento:** descargar la foto del empleado y almacenarla en el SFTP corporativo.
 
@@ -101,11 +101,11 @@ El subproceso tiene su propio Exception Subprocess para aislar fallos de conecti
 
 ## Subproceso: Book
 
-![Book Connection](../docs/Book_conecction.png)
+![Book Connection](https://github.com/CodeByAgus/sap-btp-integration-suite-bootcamp/blob/main/docs/Book_conecction.png?raw=true)
 
 **Requerimiento:** consultar el nombre del libro de bienvenida y actualizarlo en BambooHR.
 
-El ID del libro favorito del empleado está almacenado de forma no convencional en el campo `address1` de BambooHR. Con ese ID se realiza una consulta OData V2 a la **Bookshop App** (accesible a través de Cloud Connector).
+El ID del libro favorito del empleado está almacenado de forma no convencional en el campo `address1` de BambooHR. Con ese ID se realiza una consulta OData V2 a la **Bookshop App** (accesible a través del mismo adaptador Open Connectors).
 
 Un Router evalúa el resultado:
 
@@ -118,11 +118,11 @@ El subproceso tiene su propio Exception Subprocess para aislar errores de la con
 
 ## Subproceso: IDoc Sender
 
-![IDoc Connection](../docs/Idoc_conecction.png)
+![IDoc Connection](https://github.com/CodeByAgus/sap-btp-integration-suite-bootcamp/blob/main/docs/Idoc_conecction.png?raw=true)
 
 **Requerimiento:** crear el empleado en SAP S/4HANA mediante un IDoc de tipo `DEBMAS06`.
 
-Un script Groovy construye el XML del IDoc dinámicamente con los datos del empleado (nombre, apellido, ID) extraídos de las propiedades del mensaje. El número de documento (`DOCNUM`) se genera de forma única usando un correlativo basado en timestamp para garantizar idempotencia.
+Un script Groovy construye el XML del IDoc dinámicamente con los datos del empleado (nombre, apellido, ID) extraídos de las propiedades del mensaje. El número de documento (`DOCNUM`) se genera de forma secuencial con un correlativo interno.
 
 El IDoc resultante se envía vía HTTP al endpoint de SAP S/4HANA. El subproceso tiene su propio Exception Subprocess para capturar errores de comunicación con SAP.
 
@@ -170,7 +170,7 @@ Al finalizar todos los subprocesos, se construye y publica el siguiente JSON en 
 
 ## Manejo de Errores
 
-Cada subproceso tiene su propio **Exception Subprocess** independiente, lo que permite aislar fallos sin afectar los demás subprocesos del Multicast. Adicionalmente, el Integration Process principal cuenta con un Exception Subprocess global que captura cualquier error no controlado y genera un mensaje de fallo estructurado.
+Cada subproceso tiene su propio **Exception Subprocess** independiente, lo que permite aislar fallos sin afectar los demás subprocesos del Multicast. Adicionalmente, el Integration Process principal cuenta con un Exception Subprocess global que captura cualquier error no manejado y devuelve un JSON estructurado con el código de error y el mensaje descriptivo.
 
 ---
 
