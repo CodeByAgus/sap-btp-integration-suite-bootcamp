@@ -13,7 +13,7 @@ Está expuesto como API a través de **SAP API Management** y protegido con **AP
 
 ## Diagrama Principal
 
-![Flow Principal](https://github.com/CodeByAgus/sap-btp-integration-suite-bootcamp/blob/main/docs/Flow2_Principal.jpeg?raw=true)
+![Flow Principal](https://github.com/CodeByAgus/sap-btp-integration-suite-bootcamp/blob/e02a4f8ccd779522fcfafc1e428c338896b016d1/Src/Flow1%20ONBOARDING.jpeg)
 
 ---
 
@@ -64,9 +64,8 @@ Exception Subprocess global → mensaje de error estructurado
 
 ---
 
-## Subproceso: Consulta BambooHR
+## Open Connectors: Consulta BambooHR
 
-![Flow BambooHR](https://github.com/CodeByAgus/sap-btp-integration-suite-bootcamp/blob/main/docs/Flow2_Principal.jpeg?raw=true)
 
 **Requerimiento:** obtener los datos del empleado desde BambooHR usando su ID.
 
@@ -86,7 +85,7 @@ De la respuesta se extraen y almacenan como propiedades del mensaje los siguient
 
 ## Subproceso: Photo
 
-![Photo Connection](https://github.com/CodeByAgus/sap-btp-integration-suite-bootcamp/blob/main/docs/Photo_Connection.png?raw=true)
+![Photo Connection](https://github.com/CodeByAgus/sap-btp-integration-suite-bootcamp/blob/e02a4f8ccd779522fcfafc1e428c338896b016d1/Src/Photo%20Connection.png)
 
 **Requerimiento:** descargar la foto del empleado y almacenarla en el SFTP corporativo.
 
@@ -101,7 +100,7 @@ El subproceso tiene su propio Exception Subprocess para aislar fallos de conecti
 
 ## Subproceso: Book
 
-![Book Connection](https://github.com/CodeByAgus/sap-btp-integration-suite-bootcamp/blob/main/docs/Book_conecction.png?raw=true)
+![Book Connection](https://github.com/CodeByAgus/sap-btp-integration-suite-bootcamp/blob/e02a4f8ccd779522fcfafc1e428c338896b016d1/Src/Book%20connection.png)
 
 **Requerimiento:** consultar el nombre del libro de bienvenida y actualizarlo en BambooHR.
 
@@ -118,7 +117,7 @@ El subproceso tiene su propio Exception Subprocess para aislar errores de la con
 
 ## Subproceso: IDoc Sender
 
-![IDoc Connection](https://github.com/CodeByAgus/sap-btp-integration-suite-bootcamp/blob/main/docs/Idoc_conecction.png?raw=true)
+![IDoc Connection](https://github.com/CodeByAgus/sap-btp-integration-suite-bootcamp/blob/e02a4f8ccd779522fcfafc1e428c338896b016d1/Src/Idoc%20connection.png)
 
 **Requerimiento:** crear el empleado en SAP S/4HANA mediante un IDoc de tipo `DEBMAS06`.
 
