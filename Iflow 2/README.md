@@ -13,7 +13,7 @@ La separación en dos iFlows responde a una decisión de diseño: desacoplar la 
 
 ## Diagrama
 
-![Flow Entrega Final 1](../docs/Flow1.jpeg)
+![Flow Entrega Final 1](https://github.com/CodeByAgus/sap-btp-integration-suite-bootcamp/blob/bbb128a6dee3a9cddee05a6b43402281aec2b8fa/Src/Flow2%20AMQP.jpeg)
 
 ---
 
